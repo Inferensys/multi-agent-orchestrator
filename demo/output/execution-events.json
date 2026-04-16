@@ -1,0 +1,98 @@
+[
+{
+  "event": "specialist_step",
+  "step_id": "step-1",
+  "agent_name": "architecture",
+  "status": "started",
+  "timestamp": "2026-04-16T09:58:05.599576Z",
+  "notes": "Define pilot architecture and control points"
+},
+{
+  "event": "specialist_step",
+  "step_id": "step-2",
+  "agent_name": "security",
+  "status": "started",
+  "timestamp": "2026-04-16T09:58:05.599914Z",
+  "notes": "Set mandatory security gates for pilot handling of release data"
+},
+{
+  "event": "specialist_step",
+  "step_id": "step-3",
+  "agent_name": "operations",
+  "status": "started",
+  "timestamp": "2026-04-16T09:58:05.600953Z",
+  "notes": "Validate production readiness and pilot operating model"
+},
+{
+  "event": "specialist_step",
+  "step_id": "step-4",
+  "agent_name": "evals",
+  "status": "started",
+  "timestamp": "2026-04-16T09:58:05.603377Z",
+  "notes": "Establish evidence threshold and approval recommendation"
+},
+{
+  "event": "specialist_step",
+  "step_id": "step-3",
+  "agent_name": "operations",
+  "status": "completed",
+  "timestamp": "2026-04-16T09:58:30.086781Z",
+  "notes": "AI Release Reviewer Pilot – Production Readiness Assessment (Step 3)"
+},
+{
+  "event": "specialist_step",
+  "step_id": "step-1",
+  "agent_name": "architecture",
+  "status": "completed",
+  "timestamp": "2026-04-16T09:58:35.027144Z",
+  "notes": "ADR: AI Release Reviewer Pilot – Architecture and Control Points"
+},
+{
+  "event": "specialist_step",
+  "step_id": "step-4",
+  "agent_name": "evals",
+  "status": "completed",
+  "timestamp": "2026-04-16T09:58:59.780507Z",
+  "notes": "AI Release Reviewer Pilot — Approval Memo (Step 4)"
+},
+{
+  "event": "specialist_step",
+  "step_id": "step-2",
+  "agent_name": "security",
+  "status": "completed",
+  "timestamp": "2026-04-16T09:59:02.880337Z",
+  "notes": "Security Gates for AI Release Reviewer Pilot"
+},
+{
+  "event": "synthesis",
+  "step_id": null,
+  "agent_name": null,
+  "status": "started",
+  "timestamp": "2026-04-16T09:59:02.880419Z",
+  "notes": "final decision memo"
+},
+{
+  "event": "synthesis",
+  "step_id": null,
+  "agent_name": null,
+  "status": "completed",
+  "timestamp": "2026-04-16T09:59:27.279749Z",
+  "notes": "final decision memo"
+},
+{
+  "event": "review",
+  "step_id": null,
+  "agent_name": null,
+  "status": "started",
+  "timestamp": "2026-04-16T09:59:27.279786Z",
+  "notes": "principal review"
+},
+{
+  "event": "review",
+  "step_id": null,
+  "agent_name": null,
+  "status": "completed",
+  "timestamp": "2026-04-16T09:59:53.942248Z",
+  "notes": "needs-work"
+}
+]

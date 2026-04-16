@@ -1,0 +1,22 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#0B1220"/>
+  <rect x="56" y="56" width="1488" height="788" rx="28" fill="#111A2E" stroke="#223150" stroke-width="2"/>
+  <text x="104" y="154" fill="#F5F7FB" font-family="Georgia, 'Times New Roman', serif" font-size="56">Multi-Agent Review Run</text>
+  <text x="106" y="208" fill="#94A3B8" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="24">brief: AI release reviewer pilot</text>
+  <rect x="104" y="264" width="424" height="188" rx="24" fill="#16233D"/>
+  <rect x="588" y="264" width="424" height="188" rx="24" fill="#16233D"/>
+  <rect x="1072" y="264" width="368" height="188" rx="24" fill="#16233D"/>
+  <text x="140" y="330" fill="#8AA4D6" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22">recommendation</text>
+  <text x="140" y="396" fill="#FDE68A" font-family="Georgia, 'Times New Roman', serif" font-size="52">needs-work</text>
+  <text x="624" y="330" fill="#8AA4D6" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22">coverage_score</text>
+  <text x="624" y="396" fill="#7DD3FC" font-family="Georgia, 'Times New Roman', serif" font-size="52">90 / 100</text>
+  <text x="1108" y="330" fill="#8AA4D6" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22">fallback_used</text>
+  <text x="1108" y="396" fill="#86EFAC" font-family="Georgia, 'Times New Roman', serif" font-size="52">false</text>
+  <rect x="104" y="516" width="1336" height="244" rx="24" fill="#0E172A" stroke="#223150" stroke-width="2"/>
+  <text x="140" y="578" fill="#E2E8F0" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="24">plan</text>
+  <text x="140" y="634" fill="#F5F7FB" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="26">1 architecture  2 security  3 operations  4 evals</text>
+  <text x="140" y="690" fill="#94A3B8" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22">parallel artifacts: 4</text>
+  <text x="510" y="690" fill="#94A3B8" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22">total tokens: 23446</text>
+  <text x="910" y="690" fill="#94A3B8" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22">planner/synth/review: gpt-5.4</text>
+  <text x="140" y="734" fill="#94A3B8" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22">specialists: gpt-5.2-chat</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#15110D"/>
+  <rect x="56" y="56" width="1488" height="788" rx="28" fill="#1E1711" stroke="#4A3523" stroke-width="2"/>
+  <text x="104" y="154" fill="#FFF7ED" font-family="Georgia, 'Times New Roman', serif" font-size="56">Principal Review</text>
+  <text x="106" y="208" fill="#FDBA74" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="24">decision: advisory-only pilot, blocking deferred</text>
+  <rect x="104" y="264" width="1336" height="460" rx="24" fill="#16100B"/>
+  <text x="140" y="332" fill="#FED7AA" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22">high-severity findings</text>
+  <text x="140" y="404" fill="#FFF7ED" font-family="Georgia, 'Times New Roman', serif" font-size="34">1 Prompt redaction and sensitive data handling remain undefined</text>
+  <text x="140" y="468" fill="#FCD34D" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="24">Need deterministic pre-prompt scanning, suppression rules, and proof that raw cardholder data cannot leave the tenant boundary.</text>
+  <text x="140" y="556" fill="#FFF7ED" font-family="Georgia, 'Times New Roman', serif" font-size="34">2 Logging architecture is unsafe for model payloads</text>
+  <text x="140" y="620" fill="#FCD34D" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="24">Prompt/response payloads cannot stay in the generic telemetry sink. A dedicated, access-controlled trace store is required.</text>
+  <text x="140" y="708" fill="#FFF7ED" font-family="Georgia, 'Times New Roman', serif" font-size="34">3 No evaluation evidence for false positives on safe changes</text>
+  <text x="140" y="772" fill="#FCD34D" font-family="SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="24">Blocking mode is not credible until infra-only, config-only, and dependency changes are covered by offline evals.</text>
+</svg>

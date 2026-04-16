@@ -1,0 +1,73 @@
+{
+  "coverage_score": 90,
+  "release_recommendation": "needs-work",
+  "findings": [
+    {
+      "severity": "high",
+      "title": "Correct pilot decision but blocking mode is not ready",
+      "detail": "The memo makes the right top-level call: advisory-only pilot is acceptable, but enforced blocking of production changes should not be approved yet. It correctly conditions any future blocking rollout on evidence for data safety, false-positive performance, and operational ownership."
+    },
+    {
+      "severity": "high",
+      "title": "Prompt redaction and sensitive data handling remain undefined",
+      "detail": "The brief explicitly calls out code snippets in prompts without a redaction policy, and the memo correctly marks this as a blocker. Before touching production change management, the system needs deterministic pre-prompt scanning, prompt construction rules, PCI/secret suppression, and tests proving raw cardholder data cannot leave the tenant boundary."
+    },
+    {
+      "severity": "high",
+      "title": "Logging architecture is unsafe for model payloads",
+      "detail": "The memo correctly identifies that prompt and response payloads cannot be stored in the generic application telemetry sink. A dedicated, access-controlled trace store with 30-day retention is required to meet auditability and data minimization expectations."
+    },
+    {
+      "severity": "high",
+      "title": "EU residency and tenant isolation are not yet demonstrated",
+      "detail": "The brief requires separate processing and storage paths for EU tenants, but the design evidence is not shown. The memo appropriately treats this as a hard blocker for anything beyond advisory, because cross-region or cross-tenant prompt assembly would violate core compliance constraints."
+    },
+    {
+      "severity": "high",
+      "title": "No evaluation evidence for false positives on safe changes",
+      "detail": "The memo properly flags the absence of an offline evaluation set, especially for infra-only, config-only, dependency, and feature-flag changes. Without this, the team cannot justify using the system as a release gate, because operational trust will collapse under noisy reviews."
+    },
+    {
+      "severity": "high",
+      "title": "After-hours hotfix ownership is missing",
+      "detail": "The memo identifies a critical operational gap: no named owner or escalation path exists if the reviewer interferes with urgent production fixes. This is a release-readiness blocker for any workflow that can delay or influence production changes."
+    },
+    {
+      "severity": "medium",
+      "title": "Override path requirements are directionally right but incomplete in implementation detail",
+      "detail": "The memo correctly requires identity-bound, justified, auditable overrides restricted to authorized roles. However, it does not fully specify approval semantics across GitHub and Slack, conflict handling between channels, or how authorization will be enforced consistently during outages."
+    },
+    {
+      "severity": "medium",
+      "title": "Latency and rollback controls are appropriately called out",
+      "detail": "The memo covers the 12-second P95 requirement, proposes a model timeout budget, and preserves the under-5-minute rollback to advisory mode through a feature flag. This is strong coverage for pilot operability, though production-readiness still depends on measured results rather than design intent."
+    },
+    {
+      "severity": "medium",
+      "title": "Decision-boundary design is sound",
+      "detail": "The memo correctly preserves deterministic rules outside the model and separates deterministic failures from model-derived concerns. This aligns with auditability and trust requirements and is one of the stronger parts of the proposal."
+    },
+    {
+      "severity": "medium",
+      "title": "Pilot scope is right-sized for staffing, but staffing risk remains",
+      "detail": "The memo notes that the narrow pilot scope fits the available two platform engineers and one security engineer. Even so, that staffing level is thin given the required security controls, evaluation work, logging redesign, regional isolation, and incident coverage."
+    },
+    {
+      "severity": "low",
+      "title": "Success criteria for graduating from advisory to blocking are useful",
+      "detail": "The memo adds concrete metrics for false positives, precision on deterministic triggers, incorrect block rate, and latency stability. These thresholds are helpful as governance guardrails, though they should be formally owned and agreed by platform, security, and release management."
+    }
+  ],
+  "missing_threads": [
+    "Explicit data flow and trust-boundary diagram covering GitHub, Jira, Slack, model provider/runtime, trace storage, and regional routing",
+    "Model governance details: model/version selection, prompt template change control, regression testing, and re-approval triggers after model or prompt updates",
+    "Abuse and threat model for prompt injection, malicious PR content, poisoned Jira summaries, and attempts to manipulate release decisions",
+    "Precise definition of what 'touches production change management' means in advisory mode, including whether advisory output appears in production approval surfaces",
+    "Fallback behavior when Jira links are missing, stale, malformed, or unauthorized, and whether missing context degrades to advisory or no-op",
+    "Reviewer quality measurement beyond false positives, including recall on known unsafe changes and calibration of ambiguous cases",
+    "Human factors plan for operator trust: rationale quality review, reviewer UX in GitHub/Slack, and avoiding alert fatigue at 180 PRs per weekday",
+    "Access control and secret management specifics for GitHub, Jira, Slack, and trace-store credentials",
+    "Retention, deletion, and legal hold handling for traces beyond simple 30-day TTL, including who can access them",
+    "Runbook detail for incident scenarios such as model outage, regional failover constraints, degraded dependencies, and rollback execution ownership"
+  ]
+}

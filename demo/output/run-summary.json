@@ -1,0 +1,9 @@
+{
+  "request_id": "093bcceb-630a-4c79-b72c-10238975f0db",
+  "fallback_used": false,
+  "steps": 4,
+  "artifacts": 4,
+  "total_tokens": 23446,
+  "recommendation": "needs-work",
+  "coverage_score": 90
+}
