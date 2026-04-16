@@ -1,51 +1,50 @@
 # multi-agent-orchestrator
 
-Most multi-agent demos are group chats with unclear ownership and no durable outputs.
+This repo is built around one workflow:
 
-This repo is a narrower pattern: a technical review board with a fixed execution graph.
+take a technical launch brief, run parallel review passes for architecture, security, operations, and evals, then produce a board memo plus a machine-readable recommendation.
 
-- planner writes the review plan
-- specialists run in parallel against the same brief
-- synthesizer writes the decision memo
-- reviewer grades coverage and unresolved risk
+The checked scenario in this repo is an internal review for an **AI release reviewer** that would inspect pull requests before production deployment.
 
-The useful part is not “many agents.” It is the explicit artifact chain.
-
-## What Runs Here
-
-- Azure-backed planner on `gpt-5.4`
-- parallel specialist passes on `gpt-5.2-chat`
-- final synthesis and review on `gpt-5.4`
-- local fallback plan when planner output is invalid
-- checked-in execution artifacts from a live run
-
-This is not a swarm framework. It is a concrete orchestrator for review workflows where architecture, security, operations, and evals need distinct output.
-
-## Live Demo
-
-The checked-in run evaluates an internal brief for an **AI release reviewer** that would inspect pull requests before production deployment.
-
-Input:
+## Open These First
 
 - `demo/input/release-review-brief.md`
-
-Generated artifacts:
-
-- `demo/output/execution-plan.json`
-- `demo/output/01-step-1.md`
-- `demo/output/02-step-2.md`
-- `demo/output/03-step-3.md`
-- `demo/output/04-step-4.md`
 - `demo/output/decision-memo.md`
 - `demo/output/review.json`
-- `demo/output/run-summary.json`
+- `demo/output/execution-plan.json`
+
+If those four files make sense, the code will make sense.
+
+## The Scenario In This Repo
+
+The brief asks a release board a concrete question:
+
+should a platform team approve a four-week pilot for an AI reviewer that looks at GitHub PRs, Jira context, rollout history, and deployment metadata before production release?
+
+The answer from the checked run is not “AI is great” or “multi-agent systems are powerful.” The answer is narrower:
+
+- approve advisory-only pilot
+- do not approve enforced blocking yet
+- close redaction, telemetry, EU routing, eval, and hotfix ownership gaps first
+
+This is the kind of review where a single free-form assistant tends to blur too many concerns together. The point of the orchestrator is to keep the outputs separated long enough to be useful.
+
+## What The Run Produced
+
+The live run generated:
+
+- a review plan in `demo/output/execution-plan.json`
+- four specialist artifacts in `demo/output/01-step-1.md` through `demo/output/04-step-4.md`
+- a board memo in `demo/output/decision-memo.md`
+- a scored review in `demo/output/review.json`
+- an event trace in `demo/output/execution-events.json`
 
 Rendered captures:
 
 ![Run summary](assets/run-summary-card.svg)
 ![Review result](assets/review-card.svg)
 
-Observed summary:
+Summary from `demo/output/run-summary.json`:
 
 ```json
 {
@@ -58,26 +57,13 @@ Observed summary:
 }
 ```
 
-Plan shape from `demo/output/execution-plan.json`:
-
-```json
-{
-  "steps": [
-    {"assigned_agent": "architecture", "title": "Define pilot architecture and control points"},
-    {"assigned_agent": "security", "title": "Set mandatory security gates for pilot handling of release data"},
-    {"assigned_agent": "operations", "title": "Validate production readiness and pilot operating model"},
-    {"assigned_agent": "evals", "title": "Establish evidence threshold and approval recommendation"}
-  ]
-}
-```
-
-Decision excerpt from `demo/output/decision-memo.md`:
+The most important checked output is the board memo:
 
 ```md
 **Approve a four-week pilot in advisory-only mode. Do not approve enforced blocking of production changes yet.**
 ```
 
-Review excerpt from `demo/output/review.json`:
+The most important machine-readable output is the review:
 
 ```json
 {
@@ -91,30 +77,29 @@ Review excerpt from `demo/output/review.json`:
 }
 ```
 
-## Python API
+## Why The Graph Is Fixed
 
-```python
-from pathlib import Path
+This project does not expose a generic agent bus.
 
-from multi_agent_orchestrator import Orchestrator, Settings
+It runs a fixed board review:
 
-brief = Path("demo/input/release-review-brief.md").read_text()
-orchestrator = Orchestrator(settings=Settings.from_env())
+1. planner writes the work split
+2. specialists run in parallel
+3. synthesizer writes one memo
+4. reviewer scores whether the memo is actually board-ready
 
-run = orchestrator.run(
-    goal=(
-        "Decide whether the platform team should approve a pilot rollout "
-        "of the AI release reviewer and define the controls required first."
-    ),
-    brief_title="release review brief",
-    brief_markdown=brief,
-)
+The following controls stay local:
 
-print(run.review.release_recommendation)
-print(run.final_memo_markdown)
-```
+- allowed specialist roles
+- plan validation
+- concurrency limit
+- fallback plan when the planner output is invalid
+- artifact ordering
+- review schema
 
-## Run It
+The model writes content. The application keeps control of the review process.
+
+## Run The Exact Scenario
 
 Install:
 
@@ -134,39 +119,72 @@ export MULTI_AGENT_SYNTHESIZER_DEPLOYMENT="gpt-5.4"
 export MULTI_AGENT_REVIEWER_DEPLOYMENT="gpt-5.4"
 ```
 
-Run the checked-in scenario:
+Run the checked brief:
 
 ```bash
 uv run python scripts/run_live_demo.py
 ```
 
-Or run the CLI against another brief:
+That will regenerate the files in `demo/output/`.
+
+## Run It On Another Board Brief
 
 ```bash
 uv run mao-run \
-  --brief-file demo/input/release-review-brief.md \
-  --goal "Review the launch plan and decide if pilot approval is justified." \
-  --out-dir /tmp/multi-agent-review
+  --brief-file /path/to/brief.md \
+  --goal "Decide whether this pilot should be approved and what controls are missing." \
+  --out-dir /tmp/review-run
 ```
 
-## Design Constraints
+The input should be a real review brief, not a prompt toy. Good inputs usually include:
 
-- allowed specialist roles are code-defined
-- planner output is validated before execution
-- invalid plans fall back to a deterministic template
-- specialist stages are parallel, but artifact order stays tied to the plan
-- final review is structured and machine-readable
+- target system and pilot scope
+- hard requirements and SLOs
+- known constraints
+- open questions
+- ownership gaps
 
-There is no hidden agent bus here. The coordination graph is small on purpose.
+## Python Entry Point
 
-## Files Worth Reading
+```python
+from pathlib import Path
+
+from multi_agent_orchestrator import Orchestrator, Settings
+
+brief = Path("demo/input/release-review-brief.md").read_text()
+
+run = Orchestrator(settings=Settings.from_env()).run(
+    goal=(
+        "Decide whether the platform team should approve a pilot rollout "
+        "of the AI release reviewer and define the controls required first."
+    ),
+    brief_title="release review brief",
+    brief_markdown=brief,
+)
+
+print(run.review.release_recommendation)
+print(run.final_memo_markdown)
+```
+
+## Repo Map
 
 - `src/multi_agent_orchestrator/orchestrator.py`
+  Execution graph, fallback handling, artifact ordering.
+
 - `src/multi_agent_orchestrator/client.py`
+  Azure chat client and JSON-repair pass for structured stages.
+
 - `src/multi_agent_orchestrator/prompts.py`
-- `scripts/run_live_demo.py`
-- `docs/architecture.md`
+  Board-specific stage prompts and schemas.
+
+- `demo/README.md`
+  Inspection order for the checked run.
+
+- `docs/release-review-playbook.md`
+  What this review style is trying to protect.
+
 - `docs/azure-foundry.md`
+  Deployment split used for the live run.
 
 ## Verify
 
